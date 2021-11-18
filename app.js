@@ -1,13 +1,32 @@
 const express = require('express')
 const dotenv = require('dotenv')
+const morgan = require('morgan')
+const exphbs = require('express-handlebars')
 const connectDB = require('./config/db')
 
 //Load config 
+//dotenv loads environment variables from the .env file, which we created
 dotenv.config({ path: './config/config.env' })
 
+//Instantiate the db connection
 connectDB()
 
+//express is the server itself
 const app = express()
+
+//Logging if server is in dev mode
+if (process.env.NODE_ENV === 'development') {
+    app.use(morgan('dev'))
+}
+
+console.log("wtf")
+
+//Handlebars
+app.engine('.hbs', exphbs({defaultLayout: 'main', extname: '.hbs'}));
+app.set('view engine', '.hbs')
+
+// Routes
+app.use('/', require('./routes/index'))
 
 const PORT = process.env.PORT || 5000
 
