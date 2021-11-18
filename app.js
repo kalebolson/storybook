@@ -3,6 +3,7 @@ const dotenv = require('dotenv')
 const morgan = require('morgan')
 const exphbs = require('express-handlebars')
 const connectDB = require('./config/db')
+const router = require('./routes/index')
 
 //Load config 
 //dotenv loads environment variables from the .env file, which we created
@@ -19,14 +20,13 @@ if (process.env.NODE_ENV === 'development') {
     app.use(morgan('dev'))
 }
 
-console.log("wtf")
 
 //Handlebars
-app.engine('.hbs', exphbs({defaultLayout: 'main', extname: '.hbs'}));
+app.engine('.hbs', exphbs.engine({defaultLayout: 'main', extname: '.hbs'}));
 app.set('view engine', '.hbs')
 
 // Routes
-app.use('/', require('./routes/index'))
+app.use('/', router)
 
 const PORT = process.env.PORT || 5000
 
