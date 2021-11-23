@@ -1,3 +1,4 @@
+const path = require('path')
 const express = require('express')
 const dotenv = require('dotenv')
 const morgan = require('morgan')
@@ -16,7 +17,7 @@ connectDB()
 const app = express()
 
 //Logging if server is in dev mode
-if (process.env.NODE_ENV === 'development') {
+if (process.env.NODE_ENV === 'dev') {
     app.use(morgan('dev'))
 }
 
@@ -24,6 +25,9 @@ if (process.env.NODE_ENV === 'development') {
 //Handlebars
 app.engine('.hbs', exphbs.engine({defaultLayout: 'main', extname: '.hbs'}));
 app.set('view engine', '.hbs')
+
+// Static folder
+app.use(express.static(path.join(__dirname, 'public')))
 
 // Routes
 app.use('/', router)
